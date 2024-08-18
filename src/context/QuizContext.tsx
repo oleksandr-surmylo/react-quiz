@@ -141,14 +141,18 @@ function QuizProvider ( { children }: Children ) {
     useEffect ( () => {
         ( async () => {
             try {
-                console.log ( 'useEffect' )
-                const res = await fetch ( 'https://665389601c6af63f4674f61a.mockapi.io/questions' )
+                const res = await fetch ( 'https://react-quiz.free.beeceptor.com/quiz' )
+                if ( !res.ok ) {
+                    throw new Error ( 'Failed to fetch data' );
+                }
                 const data = await res.json ()
-                dispatch ( { type: ActionType.GET_DATA, payload: data } )
+                dispatch ( { type: ActionType.GET_DATA, payload: data.questions } )
             } catch ( err ) {
-                dispatch ( { type: ActionType.DATA_FAILED } )
+                if ( err instanceof Error) {
+                    console.error ( 'Error fetching data:', err.message );
+                    dispatch ( { type: ActionType.DATA_FAILED } )
+                }
             }
-
         } ) ()
     }, [] )
 
