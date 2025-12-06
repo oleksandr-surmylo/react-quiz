@@ -133,22 +133,27 @@ function QuizProvider ( { children }: Children ) {
     }, dispatch ] = useReducer ( reducer, initialState )
 
     const numQuestions: number = questions.length;
+
     const maxPossiblePoints: number = questions.reduce (
         ( prev, cur ) => prev + cur.points,
         0
     );
 
+
+    console.log (questions)
+
     useEffect ( () => {
         ( async () => {
             try {
-                const res = await fetch ( 'https://react-quiz.free.beeceptor.com/quiz' )
+                const res = await fetch ( 'https://69334038e5a9e342d2725755.mockapi.io/quiz' )
                 if ( !res.ok ) {
                     throw new Error ( 'Failed to fetch data' );
                 }
                 const data = await res.json ()
-                dispatch ( { type: ActionType.GET_DATA, payload: data.questions } )
+                // console.log ( 'data', data )
+                dispatch ( { type: ActionType.GET_DATA, payload: data[0].questions } )
             } catch ( err ) {
-                if ( err instanceof Error) {
+                if ( err instanceof Error ) {
                     console.error ( 'Error fetching data:', err.message );
                     dispatch ( { type: ActionType.DATA_FAILED } )
                 }
